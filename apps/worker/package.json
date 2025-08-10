@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "bullmq": "^4.8.0",
-    "@weave12/ai-providers": "workspace:*"
+    "@weave12/ai-providers": "0.1.0"
   }
 }

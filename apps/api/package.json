@@ -12,7 +12,7 @@
     "@fastify/jwt": "^7.0.0",
     "zod": "^3.22.2",
     "bullmq": "^4.8.0",
-    "@weave12/core": "workspace:*",
-    "@weave12/ai-providers": "workspace:*"
+    "@weave12/core": "0.1.0",
+    "@weave12/ai-providers": "0.1.0"
   }
 }
