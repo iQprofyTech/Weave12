@@ -1,0 +1,13 @@
+{
+  "name": "@weave12/worker",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "bullmq": "^4.8.0",
+    "@weave12/ai-providers": "workspace:*"
+  }
+}

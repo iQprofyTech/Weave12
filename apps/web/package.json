@@ -1,0 +1,27 @@
+{
+  "name": "@weave12/web",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/main.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0",
+    "reactflow": "^11.10.2",
+    "zustand": "^4.4.1",
+    "lucide-react": "^0.292.0",
+    "framer-motion": "^11.0.0",
+    "@weave12/core": "workspace:*",
+    "@weave12/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^4.0.0"
+  }
+}

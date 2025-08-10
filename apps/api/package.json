@@ -1,0 +1,18 @@
+{
+  "name": "@weave12/api",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "fastify": "^4.25.2",
+    "@fastify/cors": "^8.0.0",
+    "@fastify/jwt": "^7.0.0",
+    "zod": "^3.22.2",
+    "bullmq": "^4.8.0",
+    "@weave12/core": "workspace:*",
+    "@weave12/ai-providers": "workspace:*"
+  }
+}
