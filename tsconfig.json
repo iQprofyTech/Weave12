@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@weave12/core/*": ["packages/core/src/*"],
+      "@weave12/ui/*": ["packages/ui/src/*"],
+      "@weave12/ai-providers/*": ["packages/ai-providers/src/*"]
+    }
+  }
+}

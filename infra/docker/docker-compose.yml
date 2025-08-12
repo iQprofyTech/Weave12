@@ -1,0 +1,87 @@
+version: '3.9'
+services:
+  web:
+    build:
+      context: ../../
+      dockerfile: infra/docker/web.Dockerfile
+    working_dir: /app/apps/web
+    command: npm run dev
+    depends_on:
+      - api
+    environment:
+      - VITE_API_URL=/api
+
+  api:
+    build:
+      context: ../../
+      dockerfile: infra/docker/api.Dockerfile
+    working_dir: /app/apps/api
+    command: npm run start
+    environment:
+      - PORT=8080
+    depends_on:
+      - postgres
+      - redis
+
+  worker:
+    build:
+      context: ../../
+      dockerfile: infra/docker/worker.Dockerfile
+    working_dir: /app/apps/worker
+    command: npm run start
+    depends_on:
+      - redis
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: weave12
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+
+  minio:
+    image: minio/minio
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - minio-data:/data
+
+  nginx:
+    image: nginx:1.25
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - web
+      - api
+
+  promtail:
+    image: grafana/promtail:2.9.1
+    command: -config.file=/etc/promtail/config.yml
+
+  loki:
+    image: grafana/loki:2.9.1
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    ports:
+      - '3000:3000'
+    depends_on:
+      - prometheus
+      - loki
+
+volumes:
+  pgdata:
+  minio-data:
