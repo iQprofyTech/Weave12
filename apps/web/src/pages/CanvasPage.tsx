@@ -3,14 +3,17 @@ import ReactFlow, { Background, Controls, addEdge, ReactFlowInstance } from 'rea
 import 'reactflow/dist/style.css';
 import NodeBox from '../components/NodeBox';
 import { useCanvasStore } from '../features/canvas/store';
+import { useParams } from 'react-router-dom';
 import AddNodeMenu from '../components/AddNodeMenu';
 
 const nodeTypes = { box: NodeBox };
 
 export default function CanvasPage() {
+  const { id: canvasId } = useParams();
   const nodes = useCanvasStore(s => s.flowNodes());
   const edges = useCanvasStore(s => s.flowEdges());
   const addNode = useCanvasStore(s => s.addNode);
+  // TODO: filter nodes by canvasId when multi-canvas state introduced per store
   const addEdgeDomain = useCanvasStore(s => s.addEdge);
   const wrapper = React.useRef<HTMLDivElement>(null);
   const [rfInstance, setRfInstance] = React.useState<ReactFlowInstance>();
