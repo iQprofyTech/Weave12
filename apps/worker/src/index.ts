@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq';
 import { GeminiProvider, SDXLProvider, ModelScopeT2VProvider } from '@weave12/ai-providers';
-import { MODELS } from '@weave12/shared/models.registry';
+import { MODELS } from '@weave12/shared-ai';
 
 // Simple provider factory mapping by modelId (expand later)
 function resolveProvider(modelId: string) {
@@ -16,7 +16,7 @@ const connection = { connection: { host: 'redis', port: 6379 } };
 function createModalityWorker(modality: 'text' | 'image' | 'video' | 'audio') {
   return new Worker(modality, async job => {
     const { model, prompt, inputs } = job.data as any;
-    const modelMeta = MODELS.find(m => m.id === model);
+  const modelMeta = MODELS.find(m => (m as any).id === model);
     if (!modelMeta) throw new Error('Unknown model');
     if (modelMeta.modality !== modality) throw new Error('Modality mismatch');
     const provider = resolveProvider(model);

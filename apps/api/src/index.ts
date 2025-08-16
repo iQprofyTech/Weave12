@@ -2,8 +2,9 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
 import { Queue } from 'bullmq';
-import { filterModels, MODELS } from '@weave12/shared/models.registry';
-import type { GenerationJobRequest, ModelsQuery } from '@weave12/shared/types';
+import { filterModels, MODELS } from '@weave12/shared-ai';
+interface GenerationJobRequest { model: string; prompt?: string; inputs?: Record<string, any>; mode?: string; canvasId?: string; target?: string; force?: boolean; }
+interface ModelsQuery { modality?: string; include?: string[]; exclude?: string[]; providers?: string[]; tagsAny?: string[]; }
 
 const app = Fastify();
 
@@ -39,7 +40,7 @@ app.get('/api/models', async (req) => {
 
 app.get('/api/models/:id', async (req, res) => {
   const id = (req.params as any).id;
-  const model = MODELS.find(m => m.id === id);
+  const model = MODELS.find(m => (m as any).id === id);
   if (!model) {
     res.code(404);
     return { error: 'Not found' };
@@ -52,7 +53,7 @@ app.post('/api/ai/generate', async (req, res) => {
   if (!body?.model) {
     res.code(400); return { error: 'model required' };
   }
-  const modelMeta = MODELS.find(m => m.id === body.model);
+  const modelMeta = MODELS.find(m => (m as any).id === body.model);
   if (!modelMeta) { res.code(400); return { error: 'unknown model' }; }
   const prompt = body.prompt || body.inputs?.prompt;
   if (!prompt) { res.code(400); return { error: 'prompt required' }; }

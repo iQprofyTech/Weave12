@@ -5,6 +5,12 @@
   "type": "module",
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "test": "echo 'No tests yet'"
-  }
+    "test": "echo 'No tests yet'",
+    "prisma:generate": "prisma generate --schema=infra/prisma/schema.prisma",
+    "dev:api": "npm --workspace @weave12/api run dev",
+    "dev:worker": "npm --workspace @weave12/worker run dev",
+    "dev:web": "npm --workspace @weave12/web run dev",
+    "build:shared-ai": "npm --workspace @weave12/shared-ai run build"
+  },
+  "devDependencies": { "prisma": "^5.16.0" }
 }

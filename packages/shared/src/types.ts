@@ -52,6 +52,7 @@ export interface Canvas {
   createdAt: string;
   updatedAt: string;
   demo?: boolean;
+  coverUrl?: string; // optional preview image
 }
 
 export type GenerationMode = 'full' | 'changed' | 'single';

@@ -4,10 +4,18 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node --loader ts-node/esm src/index.ts"
+    "start": "node --loader ts-node/esm src/index.ts",
+    "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
     "bullmq": "^4.8.0",
-    "@weave12/ai-providers": "0.1.0"
+    "@weave12/ai-providers": "0.1.0",
+    "@weave12/shared-ai": "0.1.0",
+  "@prisma/client": "^5.16.0",
+  "@weave12/prisma": "0.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.0",
+    "prisma": "^5.16.0"
   }
 }

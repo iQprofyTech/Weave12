@@ -3,5 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --ignore-scripts
 COPY . .
+RUN npm install --ignore-scripts
 WORKDIR /app/apps/api
 CMD ["npm","run","start"]

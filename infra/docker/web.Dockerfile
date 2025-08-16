@@ -3,5 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --ignore-scripts
 COPY . .
+# Install again after workspaces package.json files are present
+RUN npm install --ignore-scripts
 WORKDIR /app/apps/web
 CMD ["npm","run","dev"]

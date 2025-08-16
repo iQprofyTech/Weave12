@@ -14,6 +14,7 @@ function toFlowNode(n: DomainNode): Node {
       modality: n.modality,
       prompt: n.params?.prompt || '',
       output: n.output,
+      canvasId: n.canvasId,
     },
   };
 }
@@ -23,6 +24,7 @@ interface CanvasState {
   edges: DomainEdge[];
   activeCanvasId?: string;
   addNode(modality: DomainNode['modality'], position: { x: number; y: number }): void;
+  setActiveCanvas(id: string): void;
   updateNode(id: string, patch: Partial<DomainNode>): void;
   addEdge(from: string, to: string): void;
   removeNode(id: string): void;
@@ -34,6 +36,7 @@ export const useCanvasStore = create<CanvasState>((set, get) => ({
   nodes: [],
   edges: [],
   activeCanvasId: 'demo',
+  setActiveCanvas(id) { set({ activeCanvasId: id }); },
   addNode(modality, position) {
     set(s => ({
       nodes: s.nodes.concat({
@@ -70,9 +73,14 @@ export const useCanvasStore = create<CanvasState>((set, get) => ({
     }));
   },
   flowNodes() {
-    return get().nodes.map(toFlowNode);
+    const id = get().activeCanvasId;
+    return get().nodes.filter(n => n.canvasId === id).map(toFlowNode);
   },
   flowEdges() {
-    return get().edges.map(e => ({ id: e.id, source: e.from, target: e.to }));
+    const id = get().activeCanvasId;
+    return get().edges.filter(e => {
+      const from = get().nodes.find(n => n.id === e.from);
+      return from?.canvasId === id;
+    }).map(e => ({ id: e.id, source: e.from, target: e.to }));
   },
 }));

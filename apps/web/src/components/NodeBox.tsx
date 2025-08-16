@@ -3,6 +3,8 @@ import NodeToolbar from './NodeToolbar';
 import { useCanvasStore } from '../features/canvas/store';
 import { Image, Type, Video, Waveform } from 'lucide-react';
 import { filterModels } from '@weave12/shared/models.registry';
+import { generate, pollJob } from '../lib/api';
+import { useState } from 'react';
 
 function iconFor(modality?: string) {
   switch (modality) {
@@ -32,6 +34,44 @@ export default function NodeBox(props: NodeProps) {
     audio: 'Describe sound or paste transcript...'
   };
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const run = async () => {
+    if (loading) return;
+    setError(null);
+    try {
+      setLoading(true);
+      const promptVal = (props.data?.params?.prompt) || prompt;
+      const gen = await generate({
+        model: selectedModel,
+        prompt: promptVal,
+        canvasId: props.data?.canvasId || 'demo',
+        nodeId: props.id,
+      });
+      const status = await pollJob(gen.jobId);
+      if (status.state === 'completed') {
+        updateNode(props.id, {
+          output: {
+            type: modality,
+            text: typeof status.returnvalue === 'string' ? status.returnvalue : status.returnvalue?.text,
+            url: status.returnvalue?.url,
+            modelId: selectedModel,
+            startedAt: new Date().toISOString(),
+            finishedAt: new Date().toISOString(),
+            durationMs: 0,
+          } as any,
+        });
+      } else if (status.state === 'failed') {
+        setError(status.failedReason || 'Failed');
+      }
+    } catch (e:any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative rounded-xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 shadow-sm p-4 w-[340px] h-[220px] flex flex-col group">
       <Handle type="target" position={Position.Left} className="!w-3 !h-3" />
@@ -51,10 +91,10 @@ export default function NodeBox(props: NodeProps) {
           onChange={e => updateNode(props.id, { params: { ...(props.data?.params||{}), prompt: e.target.value } as any })}
         />
         <div className="mt-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          {/* Action buttons placeholder */}
-          <button className="text-[11px] px-2 py-1 rounded bg-slate-900/80 text-white dark:bg-white/10">Run</button>
+          <button onClick={run} disabled={loading} className="text-[11px] px-2 py-1 rounded bg-slate-900/80 text-white dark:bg-white/10 disabled:opacity-50">{loading ? 'Running...' : 'Run'}</button>
           <button className="text-[11px] px-2 py-1 rounded bg-slate-900/5 dark:bg-white/5">⋯</button>
         </div>
+        {error && <div className="mt-1 text-[10px] text-red-500 truncate">{error}</div>}
       </div>
       <Handle type="source" position={Position.Right} className="!w-3 !h-3" />
       <div className="absolute -top-9 left-1/2 -translate-x-1/2"><NodeToolbar /></div>
