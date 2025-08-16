@@ -6,6 +6,10 @@ services:
       dockerfile: infra/docker/web.Dockerfile
     working_dir: /app/apps/web
     command: npm run dev
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
     depends_on:
       - api
     environment:
@@ -17,6 +21,10 @@ services:
       dockerfile: infra/docker/api.Dockerfile
     working_dir: /app/apps/api
     command: npm run start
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
     environment:
       - PORT=8080
     depends_on:
@@ -29,6 +37,10 @@ services:
       dockerfile: infra/docker/worker.Dockerfile
     working_dir: /app/apps/worker
     command: npm run start
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+      - /app/apps/worker/node_modules
     depends_on:
       - redis
 
