@@ -43,6 +43,7 @@ model Node {
   projectId  String
   type       String
   model      String
+  modelId    String?  @db.VarChar(191)
   aspectRatio String
   prompt     String
   x          Int
