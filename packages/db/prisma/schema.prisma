@@ -42,7 +42,9 @@ model Node {
   id         String   @id @default(cuid())
   projectId  String
   type       String
-  model      String
+  // legacy field (to be removed after migration); do NOT use in new code
+  model      String @db.VarChar(191)
+  // canonical model identifier
   modelId    String?  @db.VarChar(191)
   aspectRatio String
   prompt     String

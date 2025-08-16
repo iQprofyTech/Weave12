@@ -15,13 +15,14 @@ const connection = { connection: { host: 'redis', port: 6379 } };
 
 function createModalityWorker(modality: 'text' | 'image' | 'video' | 'audio') {
   return new Worker(modality, async job => {
-    const { model, prompt, inputs } = job.data as any;
-  const modelMeta = MODELS.find(m => (m as any).id === model);
+    const { modelId, model, prompt, inputs } = job.data as any;
+    const id = modelId || model;
+    const modelMeta = MODELS.find(m => (m as any).id === id);
     if (!modelMeta) throw new Error('Unknown model');
     if (modelMeta.modality !== modality) throw new Error('Modality mismatch');
-    const provider = resolveProvider(model);
-    const result = await provider.generate({ prompt, ...inputs, model });
-    return { model, result };
+    const provider = resolveProvider(id);
+    const result = await provider.generate({ prompt, ...inputs, model: id });
+    return { modelId: id, result };
   }, connection);
 }
 
