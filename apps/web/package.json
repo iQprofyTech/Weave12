@@ -14,7 +14,8 @@
     "react-router-dom": "^6.21.0",
     "reactflow": "^11.10.2",
     "zustand": "^4.4.1",
-    "lucide-react": "^0.292.0",
+  "lucide-react": "^0.292.0",
+  "nanoid": "^5.0.0",
     "framer-motion": "^11.0.0",
     "@weave12/core": "0.1.0",
     "@weave12/ui": "0.1.0"
