@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@weave12/core/*": ["packages/core/src/*"],
+      "@weave12/ui/*": ["packages/ui/src/*"],
+      "@weave12/ai-providers/*": ["packages/ai-providers/src/*"],
+      "@weave12/shared-ai/*": ["packages/shared-ai/src/*"],
+      "@weave12/db/*": ["packages/db/src/*"]
+    }
+  }
+}
